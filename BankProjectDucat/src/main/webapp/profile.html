@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - State Bank of India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head> 
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">SBI</div>
+                    <div class="logo-text">
+                        <h1>State Bank of India</h1>
+                        <p>India's Trusted Bank Since 1806</p>
+                    </div> 
+                </div>
+                <nav id="mainNav">
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="transfer.html">Transfer</a>
+                    <a href="deposit.html">Deposit</a>
+                    <a href="transactions.html">Transactions</a>
+                    <a href="profile.html">Profile</a>
+                </nav>
+                <form action="logout" method="post" style="margin:0;">
+                    <button type="submit" class="btn-login">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="transfer-form">
+                <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.75rem; margin-bottom: 1.5rem; color: var(--sbi-navy);">Profile Settings</h3>
+                <div id="profileAlert"></div>
+                
+                <form id="profileForm" action="profile" method="post">
+                    <div class="form-group">
+                        <label>Account Number</label>
+                        <input type="text" class="form-control" id="profileAccountNum" name="accountNumber" readonly style="background: #f1f5f9;">
+                    </div>
+                    <div class="form-group">
+                        <label for="profileName">Full Name</label>
+                        <input type="text" id="profileName" name="fullName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">Email</label>
+                        <input type="email" id="profileEmail" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profilePhone">Phone Number</label>
+                        <input type="tel" id="profilePhone" name="phone" class="form-control" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Type</label>
+                        <input type="text" class="form-control" id="profileAccountType" name="accountType" readonly style="background: #f1f5f9; text-transform: capitalize;">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Update Profile</button>
+                    </div>
+                    <div style="margin-top: 1rem; text-align: center;">
+                        <a href="dashboard.html" style="color: var(--sbi-teal); text-decoration: none;">← Back to Dashboard</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 State Bank of India. All rights reserved. | This is a demo website for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch current user data from Servlet to fill the form on load
+        window.onload = function() {
+            fetch('./GetProfile')
+                .then(response => {
+                    if (response.status === 401) {
+                        window.location.href = 'login.html'; // Redirect if not logged in
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    // Fill inputs with database data
+                    document.getElementById('profileAccountNum').value = data.accountNumber;
+                    document.getElementById('profileName').value = data.fullName;
+                    document.getElementById('profileEmail').value = data.email;
+                    document.getElementById('profilePhone').value = data.phone;
+                    document.getElementById('profileAccountType').value = data.accountType;
+                })
+                .catch(error => console.error('Error loading profile:', error));
+        };
+    </script>
+</body>
+</html>

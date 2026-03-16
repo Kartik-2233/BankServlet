@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - State Bank of India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">SBI</div>
+                    <div class="logo-text">
+                        <h1>State Bank of India</h1>
+                        <p>India's Trusted Bank Since 1806</p>
+                    </div>
+                </div>
+                <nav id="mainNav">
+                    <a href="admin.html">Dashboard</a>
+                    <a href="admin-users.html">Users</a>
+                    <a href="admin-transactions.html">Transactions</a>
+                    <a href="admin-add-money.html">Add Money</a>
+                    <a href="admin-deduct-money.html">Deduct Money</a>
+                </nav>
+                <form action="logout" method="post" style="margin:0;">
+                    <button type="submit" class="btn-login">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="transaction-section">
+                <h3>All Users</h3>
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Account No.</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Balance</th>
+                            <th>Account Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUsersList">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: var(--sbi-gray);">Loading users...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 State Bank of India. All rights reserved. | This is a demo website for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch users from Java Servlet on page load
+        window.onload = function() {
+            fetch('getUsers')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(users => {
+                    const tbody = document.getElementById('adminUsersList');
+                    if (users.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No users found</td></tr>';
+                        return;
+                    }
+                    // Inject database rows into HTML table
+                    tbody.innerHTML = users.map(u => `
+                        <tr>
+                            <td>${u.accountNumber}</td>
+                            <td>${u.fullName}</td>
+                            <td>${u.email}</td>
+                            <td>${u.phone}</td>
+                            <td>₹${parseFloat(u.balance).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+                            <td style="text-transform: capitalize;">${u.accountType}</td>
+                        </tr>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('adminUsersList').innerHTML = 
+                        '<tr><td colspan="6" style="text-align: center; color: var(--sbi-error);">Failed to load user data.</td></tr>';
+                });
+        };
+    </script>
+</body>
+</html>

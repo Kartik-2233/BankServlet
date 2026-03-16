@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Money - State Bank of India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">SBI</div>
+                    <div class="logo-text">
+                        <h1>State Bank of India</h1>
+                        <p>India's Trusted Bank Since 1806</p>
+                    </div>
+                </div>
+                <nav id="mainNav">
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="transfer.html">Transfer</a>
+                    <a href="deposit.html">Deposit</a>
+                    <a href="transactions.html">Transactions</a>
+                    <a href="profile.html">Profile</a>
+                </nav>
+                <form action="logout" method="post" style="margin:0;">
+                    <button type="submit" class="btn-login">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="transfer-form">
+                <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.75rem; margin-bottom: 1.5rem; color: var(--sbi-navy);">💰 Deposit Money</h3>
+                <p style="color: var(--sbi-gray); margin-bottom: 2rem;">Add funds to your account instantly</p>
+                
+                <form action="deposit" method="post" id="depositForm">
+                    <div class="form-group">
+                        <label for="depositAmount">Amount</label>
+                        <div class="amount-input-group">
+                            <span class="currency-symbol">₹</span>
+                            <input type="number" id="depositAmount" name="amount" class="form-control amount-input" min="1" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="depositMethod">Deposit Method</label>
+                        <select id="depositMethod" name="method" class="form-control" required>
+                            <option value="Cash">Cash Deposit</option>
+                            <option value="Cheque">Cheque Deposit</option>
+                            <option value="Online Transfer">Online Transfer</option>
+                            <option value="Card">Debit/Credit Card</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="depositRemark">Remark (Optional)</label>
+                        <input type="text" id="depositRemark" name="remark" class="form-control" placeholder="e.g., Monthly salary, Freelance payment...">
+                    </div>
+                    
+                    <div style="background: #dbeafe; border-left: 4px solid var(--sbi-blue); padding: 1rem; border-radius: 8px; margin: 1.5rem 0;">
+                        <div style="display: flex; align-items: start; gap: 0.75rem;">
+                            <span style="font-size: 1.25rem;">ℹ️</span>
+                            <div>
+                                <strong style="color: var(--sbi-navy);">Quick Info:</strong>
+                                <ul style="margin: 0.5rem 0 0 1rem; color: var(--sbi-gray); font-size: 0.875rem;">
+                                    <li>Instant credit to your account</li>
+                                    <li>No deposit limits</li>
+                                    <li>Available 24/7</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">💳 Deposit Now</button>
+                    </div>
+                    <div style="margin-top: 1rem; text-align: center;">
+                        <a href="dashboard.html" style="color: var(--sbi-teal); text-decoration: none;">← Back to Dashboard</a>
+                    </div>
+                </form>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <div class="features" style="margin: 0;">
+                    <div class="feature-card" style="text-align: center; cursor: pointer;" onclick="quickDeposit(1000)">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--sbi-navy); margin-bottom: 0.5rem;">₹1,000</div>
+                        <p style="margin: 0; font-size: 0.875rem;">Quick Deposit</p>
+                    </div>
+                    <div class="feature-card" style="text-align: center; cursor: pointer;" onclick="quickDeposit(5000)">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--sbi-navy); margin-bottom: 0.5rem;">₹5,000</div>
+                        <p style="margin: 0; font-size: 0.875rem;">Quick Deposit</p>
+                    </div>
+                    <div class="feature-card" style="text-align: center; cursor: pointer;" onclick="quickDeposit(10000)">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--sbi-navy); margin-bottom: 0.5rem;">₹10,000</div>
+                        <p style="margin: 0; font-size: 0.875rem;">Quick Deposit</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UX Helper: Updates the input field value instantly
+        function quickDeposit(amount) {
+            document.getElementById('depositAmount').value = amount;
+            document.getElementById('depositAmount').focus();
+        }
+    </script>
+</body>
+</html>

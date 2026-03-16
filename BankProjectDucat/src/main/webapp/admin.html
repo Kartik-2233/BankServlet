@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - State Bank of India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">SBI</div>
+                    <div class="logo-text">
+                        <h1>State Bank of India</h1>
+                        <p>India's Trusted Bank Since 1806</p>
+                    </div>
+                </div>
+                <nav id="mainNav">
+                    <a href="admin.html">Dashboard</a>
+                    <a href="admin-users.html">Users</a>
+                    <a href="admin-transactions.html">Transactions</a>
+                    <a href="admin-add-money.html">Add Money</a>
+                    <a href="admin-deduct-money.html">Deduct Money</a>
+                </nav>
+                <form action="logout" method="post" style="margin:0;">
+                    <button type="submit" class="btn-login">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h2>Admin Dashboard</h2>
+                    <p style="color: var(--sbi-gray); margin-top: 0.5rem;">System overview and user management</p>
+                </div>
+
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalUsers">0</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: var(--sbi-gold);">
+                        <div class="stat-value" id="totalTransactions">0</div>
+                        <div class="stat-label">Total Transactions</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: var(--sbi-success);">
+                        <div class="stat-value" id="totalBalance">₹0.00</div>
+                        <div class="stat-label">Total Balance</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: var(--sbi-error);">
+                        <div class="stat-value" id="activeAccounts">0</div>
+                        <div class="stat-label">Active Accounts</div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h3>Admin Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="window.location.href='admin-add-money.html'">
+                            <div class="action-icon">💰</div>
+                            <div>Add Money to Account</div>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='admin-deduct-money.html'">
+                            <div class="action-icon">💸</div>
+                            <div>Deduct Money from Account</div>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='admin-users.html'">
+                            <div class="action-icon">👥</div>
+                            <div>Manage Users</div>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='admin-transactions.html'">
+                            <div class="action-icon">📊</div>
+                            <div>View All Transactions</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="transaction-section">
+                    <h3>Recent Activity</h3>
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>From Account</th>
+                                <th>To Account</th>
+                                <th>Amount</th>
+                                <th>Mode</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentActivityList">
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--sbi-gray);">Loading activity...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fetch dashboard statistics and recent activity on page load
+        window.onload = function() {
+            fetch('adminDashboard')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(data => {
+                    // Update Stats
+                    document.getElementById('totalUsers').textContent = data.totalUsers;
+                    document.getElementById('totalTransactions').textContent = data.totalTransactions;
+                    document.getElementById('totalBalance').textContent = '₹' + parseFloat(data.totalBalance).toLocaleString('en-IN', {minimumFractionDigits: 2});
+                    document.getElementById('activeAccounts').textContent = data.activeAccounts;
+
+                    // Update Recent Activity Table
+                    const tbody = document.getElementById('recentActivityList');
+                    if (data.recentTransactions.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No recent activity</td></tr>';
+                    } else {
+                        tbody.innerHTML = data.recentTransactions.map(t => `
+                            <tr>
+                                <td>${t.date}</td>
+                                <td>${t.fromAccount}</td>
+                                <td>${t.toAccount}</td>
+                                <td class="transaction-amount">₹${t.amount}</td>
+                                <td>${t.mode}</td>
+                                <td><span class="transaction-status status-${t.status.toLowerCase()}">${t.status}</span></td>
+                            </tr>
+                        `).join('');
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                });
+        };
+    </script>
+</body>
+</html>

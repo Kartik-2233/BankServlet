@@ -1,0 +1,141 @@
+-- ==========================================
+-- RESET DATABASE
+-- ==========================================
+
+DROP DATABASE IF EXISTS bankproj;
+CREATE DATABASE bankproj;
+USE bankproj;
+
+-- ==========================================
+-- ACCOUNT TABLE
+-- ==========================================
+
+CREATE TABLE account (
+
+id INT AUTO_INCREMENT PRIMARY KEY,
+
+accountnumber VARCHAR(20) UNIQUE,
+
+balance DECIMAL(12,2) DEFAULT 0,
+
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
+
+-- ==========================================
+-- USERS TABLE
+-- ==========================================
+
+CREATE TABLE usertable (
+
+id INT AUTO_INCREMENT PRIMARY KEY,
+
+fullname VARCHAR(100) NOT NULL,
+
+email VARCHAR(100) UNIQUE NOT NULL,
+
+phone VARCHAR(20),
+
+username VARCHAR(50) UNIQUE NOT NULL,
+
+password VARCHAR(255) NOT NULL,
+
+accountType VARCHAR(20),
+
+accountnumber VARCHAR(20),
+
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+FOREIGN KEY (accountnumber)
+REFERENCES account(accountnumber)
+ON DELETE CASCADE
+
+);
+
+-- ==========================================
+-- TRANSACTIONS TABLE
+-- ==========================================
+
+CREATE TABLE transactions (
+
+id INT AUTO_INCREMENT PRIMARY KEY,
+
+accountnumber VARCHAR(20),
+
+description VARCHAR(255),
+
+amount DECIMAL(12,2),
+
+type VARCHAR(20),
+
+reference_account VARCHAR(20),
+
+balance_after DECIMAL(12,2),
+
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+FOREIGN KEY (accountnumber)
+REFERENCES account(accountnumber)
+ON DELETE CASCADE
+
+);
+
+-- ==========================================
+-- CONTACT FEEDBACK TABLE
+-- ==========================================
+
+CREATE TABLE feedback (
+
+id INT AUTO_INCREMENT PRIMARY KEY,
+
+fullname VARCHAR(100),
+
+email VARCHAR(100),
+
+phone VARCHAR(20),
+
+subject VARCHAR(200),
+
+message TEXT,
+
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
+
+-- ==========================================
+-- ADMIN TABLE
+-- ==========================================
+
+CREATE TABLE admin (
+
+id INT AUTO_INCREMENT PRIMARY KEY,
+
+username VARCHAR(50) UNIQUE,
+
+password VARCHAR(255)
+
+);
+
+-- Default admin
+INSERT INTO admin(username,password)
+VALUES('Admin','Admin123');
+
+-- ==========================================
+-- ACCOUNT NUMBER GENERATION TRIGGER
+-- ==========================================
+
+DELIMITER $$
+
+CREATE TRIGGER generate_account_number
+AFTER INSERT ON account
+FOR EACH ROW
+BEGIN
+
+UPDATE account
+SET accountnumber =
+CONCAT('SBI', LPAD(NEW.id,9,'0'))
+WHERE id = NEW.id;
+
+END$$
+
+DELIMITER ;

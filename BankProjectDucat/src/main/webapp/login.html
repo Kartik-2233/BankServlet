@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - State Bank of India</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header>
+		<div class="container">
+			<div class="header-content">
+				<div class="logo">
+					<div class="logo-icon">SBI</div>
+					<div class="logo-text">
+						<h1>State Bank of India</h1>
+						<p>India's Trusted Bank Since 1806</p>
+					</div>
+				</div>
+				<nav id="mainNav">
+					<a href="index.html">Home</a> <a href="about.html">About</a> <a
+						href="services.html">Services</a> <a href="contact.html">Contact</a>
+				</nav>
+				<a href="signup.html" class="btn-login"
+					style="text-decoration: none; display: inline-block;">Sign Up</a>
+			</div>
+		</div>
+	</header>
+
+	<div class="main-wrapper">
+		<div class="container">
+			<div class="auth-container">
+				<div class="auth-header">
+					<h2>Welcome Back</h2>
+					<p>Login to access your account</p>
+				</div>
+				<form action="login" method="post">
+					<div class="form-group">
+						<label> user Type</label> <select name="type" class="form-control"
+							required>
+							<option value="user">User</option>
+							<option value="admin">Admin</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="loginUsername">Username / Account Number</label> <input
+							type="text" name="username" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label for="loginPassword">Password</label> <input type="password"
+							name="password" class="form-control" required>
+					</div>
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+					</div>
+				</form>
+				<div class="form-link">
+					Don't have an account? <a href="signup.html">Sign up here</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

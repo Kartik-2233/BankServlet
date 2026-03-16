@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Money to Account - Admin - State Bank of India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">SBI</div>
+                    <div class="logo-text">
+                        <h1>State Bank of India</h1>
+                        <p>India's Trusted Bank Since 1806</p>
+                    </div>
+                </div>
+                <nav id="mainNav">
+                    <a href="admin.html">Dashboard</a>
+                    <a href="admin-users.html">Users</a>
+                    <a href="admin-transactions.html">Transactions</a>
+                    <a href="admin-add-money.html">Add Money</a>
+                    <a href="admin-deduct-money.html">Deduct Money</a>
+                </nav>
+                <form action="logout" method="post" style="margin:0;">
+                    <button type="submit" class="btn-login">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="transfer-form">
+                <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.75rem; margin-bottom: 1.5rem; color: var(--sbi-navy);">💰 Add Money to User Account</h3>
+                <p style="color: var(--sbi-gray); margin-bottom: 2rem;">Credit funds to any user account (Admin Only)</p>
+                
+                <form action="adminAction" method="post" id="addMoneyForm">
+                    <input type="hidden" name="actionType" value="addMoney">
+
+                    <div class="form-group">
+                        <label for="addMoneyAccount">User Account Number</label>
+                        <input type="text" id="addMoneyAccount" name="accountNumber" class="form-control" placeholder="SBI12345678901" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addMoneyUserName">Account Holder Name (for verification)</label>
+                        <input type="text" id="addMoneyUserName" name="holderName" class="form-control" readonly style="background: #f1f5f9;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addMoneyAmount">Amount to Add</label>
+                        <div class="amount-input-group">
+                            <span class="currency-symbol">₹</span>
+                            <input type="number" id="addMoneyAmount" name="amount" class="form-control amount-input" min="1" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addMoneyReason">Reason</label>
+                        <select id="addMoneyReason" name="reason" class="form-control" required>
+                            <option value="">Select Reason</option>
+                            <option value="Manual Deposit">Manual Deposit</option>
+                            <option value="Bonus Credit">Bonus Credit</option>
+                            <option value="Correction">Balance Correction</option>
+                            <option value="Interest">Interest Credit</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addMoneyRemarks">Remarks (Optional)</label>
+                        <input type="text" id="addMoneyRemarks" name="remarks" class="form-control" placeholder="Additional details...">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">💳 Add Money to Account</button>
+                    </div>
+                </form>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <h4 style="text-align: center; margin-bottom: 1rem; color: white;">Quick Add Amounts</h4>
+                <div class="features" style="margin: 0;">
+                    <div class="feature-card" style="text-align: center; cursor: pointer;" onclick="quickAddAmount(1000)">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--sbi-navy); margin-bottom: 0.5rem;">₹1,000</div>
+                    </div>
+                    <div class="feature-card" style="text-align: center; cursor: pointer;" onclick="quickAddAmount(5000)">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--sbi-navy); margin-bottom: 0.5rem;">₹5,000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UX Helper: Updates the input field value instantly
+        function quickAddAmount(amount) {
+            document.getElementById('addMoneyAmount').value = amount;
+        }
+
+        // Logic to fetch user details via AJAX
+        document.getElementById('addMoneyAccount').addEventListener('blur', function() {
+            const accNo = this.value;
+            if(accNo.length > 5) {
+                // You can use fetch() here to call a Servlet that returns JSON user data
+                console.log("Fetching details for: " + accNo);
+            }
+        });
+    </script>
+</body>
+</html>

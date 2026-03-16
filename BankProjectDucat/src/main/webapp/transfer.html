@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Money - State Bank of India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">SBI</div>
+                    <div class="logo-text">
+                        <h1>State Bank of India</h1>
+                        <p>India's Trusted Bank Since 1806</p>
+                    </div>
+                </div>
+                <nav id="mainNav">
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="transfer.html">Transfer</a>
+                    <a href="deposit.html">Deposit</a>
+                    <a href="transactions.html">Transactions</a>
+                    <a href="profile.html">Profile</a>
+                </nav>
+                <form action="logout" method="post" style="margin:0;">
+                    <button type="submit" class="btn-login">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="transfer-form">
+                <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.75rem; margin-bottom: 1.5rem; color: var(--sbi-navy);">Transfer Money</h3>
+                <div id="transferAlert"></div>
+                
+                <form action="transfer" method="post" id="transferForm">
+                    <div class="form-group">
+                        <label for="transferTo">Recipient Account Number</label>
+                        <input type="text" id="transferTo" name="recipientAccount" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="beneficiaryName">Beneficiary Name</label>
+                        <input type="text" id="beneficiaryName" name="beneficiaryName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transferAmount">Amount</label>
+                        <div class="amount-input-group">
+                            <span class="currency-symbol">₹</span>
+                            <input type="number" id="transferAmount" name="amount" class="form-control amount-input" min="1" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="transferMode">Transfer Mode</label>
+                        <select id="transferMode" name="transferMode" class="form-control" required>
+                            <option value="NEFT">NEFT (National Electronic Funds Transfer)</option>
+                            <option value="IMPS">IMPS (Immediate Payment Service)</option>
+                            <option value="RTGS">RTGS (Real Time Gross Settlement)</option>
+                            <option value="UPI">UPI (Unified Payments Interface)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transferRemark">Remark (Optional)</label>
+                        <input type="text" id="transferRemark" name="remark" class="form-control" placeholder="Payment for...">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Transfer Now</button>
+                    </div>
+                    <div style="margin-top: 1rem; text-align: center;">
+                        <a href="dashboard.html" style="color: var(--sbi-teal); text-decoration: none;">← Back to Dashboard</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 State Bank of India. All rights reserved. | This is a demo website for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

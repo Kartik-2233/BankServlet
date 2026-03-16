@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deduct Money from Account - Admin - State Bank of India</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+<header>
+<div class="container">
+<div class="header-content">
+
+<div class="logo">
+<div class="logo-icon">SBI</div>
+<div class="logo-text">
+<h1>State Bank of India</h1>
+<p>India's Trusted Bank Since 1806</p>
+</div>
+</div>
+
+<nav id="mainNav">
+<a href="admin.html">Dashboard</a>
+<a href="admin-users.html">Users</a>
+<a href="admin-transactions.html">Transactions</a>
+<a href="admin-add-money.html">Add Money</a>
+<a href="admin-deduct-money.html">Deduct Money</a>
+</nav>
+
+<form action="logout" method="post" style="margin:0;">
+<button type="submit" class="btn-login">Logout</button>
+</form>
+
+</div>
+</div>
+</header>
+
+<div class="main-wrapper">
+
+<div class="container">
+
+<div class="transfer-form">
+
+<h3 style="font-family:'Crimson Pro',serif;font-size:1.75rem;margin-bottom:1.5rem;color:var(--sbi-navy);">
+💸 Deduct Money from User Account
+</h3>
+
+<p style="color:var(--sbi-gray);margin-bottom:2rem;">
+Debit funds from any user account (Admin Only)
+</p>
+
+<form action="AdminActionServlet" method="post">
+
+<input type="hidden" name="actionType" value="deductMoney">
+
+<div class="form-group">
+<label>User Account Number</label>
+
+<input 
+type="text"
+id="deductMoneyAccount"
+name="accountNumber"
+class="form-control"
+placeholder="SBI12345678901"
+required>
+
+<small style="color:var(--sbi-gray);margin-top:0.5rem;display:block;">
+Enter the account number to debit money
+</small>
+</div>
+
+<div class="form-group">
+<label>Account Holder Name</label>
+
+<input
+type="text"
+id="deductMoneyUserName"
+class="form-control"
+readonly
+style="background:#f1f5f9;">
+
+</div>
+
+<div class="form-group">
+<label>Current Balance</label>
+
+<input
+type="text"
+id="deductMoneyCurrentBalance"
+class="form-control"
+readonly
+style="background:#f1f5f9;">
+
+</div>
+
+<div class="form-group">
+
+<label>Amount to Deduct</label>
+
+<div class="amount-input-group">
+
+<span class="currency-symbol">₹</span>
+
+<input
+type="number"
+id="deductMoneyAmount"
+name="amount"
+class="form-control amount-input"
+min="1"
+step="0.01"
+required>
+
+</div>
+
+<small style="color:var(--sbi-error);margin-top:0.5rem;display:block;">
+⚠️ This will deduct money from the user's account
+</small>
+
+</div>
+
+<div class="form-group">
+
+<label>Reason</label>
+
+<select
+id="deductMoneyReason"
+name="reason"
+class="form-control"
+required>
+
+<option value="">Select Reason</option>
+<option value="Penalty">Penalty / Fine</option>
+<option value="Service Charge">Service Charge</option>
+<option value="Correction">Balance Correction</option>
+<option value="Chargeback">Chargeback</option>
+<option value="Fee">Account Fee</option>
+<option value="Other">Other</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Remarks (Optional)</label>
+
+<input
+type="text"
+id="deductMoneyRemarks"
+name="remarks"
+class="form-control"
+placeholder="Additional details...">
+
+</div>
+
+<div class="form-actions">
+
+<button
+type="submit"
+class="btn btn-primary"
+style="width:100%;background:linear-gradient(135deg,var(--sbi-error),#b91c1c);">
+
+💸 Deduct Money from Account
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+<div style="margin-top:2rem;">
+
+<h4 style="text-align:center;margin-bottom:1rem;color:white;">
+Quick Deduct Amounts
+</h4>
+
+<div class="features" style="margin:0;">
+
+<div
+class="feature-card"
+style="text-align:center;cursor:pointer;border-left:4px solid var(--sbi-error);"
+onclick="quickDeduct(100)">
+
+<div style="font-size:2rem;font-weight:700;color:var(--sbi-error);margin-bottom:0.5rem;">
+₹100
+</div>
+
+</div>
+
+<div
+class="feature-card"
+style="text-align:center;cursor:pointer;border-left:4px solid var(--sbi-error);"
+onclick="quickDeduct(500)">
+
+<div style="font-size:2rem;font-weight:700;color:var(--sbi-error);margin-bottom:0.5rem;">
+₹500
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+document.getElementById("deductMoneyAccount").addEventListener("blur", function(){
+
+let acc = this.value;
+
+if(acc.trim() === ""){
+return;
+}
+
+fetch("GetAccountDetails?accountNumber=" + acc)
+
+.then(res => {
+
+if(!res.ok){
+throw new Error("Account not found");
+}
+
+return res.json();
+
+})
+
+.then(data => {
+
+document.getElementById("deductMoneyUserName").value = data.fullName;
+document.getElementById("deductMoneyCurrentBalance").value = data.balance;
+
+})
+
+.catch(err => {
+
+document.getElementById("deductMoneyUserName").value = "";
+document.getElementById("deductMoneyCurrentBalance").value = "";
+
+alert("Account not found");
+
+});
+
+});
+
+
+function quickDeduct(amount){
+
+document.getElementById("deductMoneyAmount").value = amount;
+
+}
+
+</script>
+
+</body>
+</html>
